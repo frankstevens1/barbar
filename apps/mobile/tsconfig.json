@@ -4,7 +4,8 @@
     "strict": true,
     "paths": {
       "@/*": ["./*"],
-      "@workspace/feature-home/*": ["../../packages/feature-home/src/*"]
+      "@workspace/feature-home/*": ["../../packages/feature-home/src/*"],
+      "@workspace/mobile-ui/*": ["../../packages/mobile-ui/src/*"],
     },
   },
   "include": [

@@ -1,5 +1,6 @@
 import { HomeMessage } from '@workspace/feature-home/HomeMessage';
 import { HomeMessageIcon } from '@workspace/feature-home/HomeMessageIcon';
+import { Button } from '@workspace/mobile-ui/components/button';
 import { Image, StyleSheet, Platform } from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -18,12 +19,12 @@ export default function HomeScreen() {
       }
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText>
-          <HomeMessage />
-        </ThemedText>
-        <ThemedText>
-          <HomeMessageIcon />
-        </ThemedText>
+        <ThemedText type="title">Hello World.</ThemedText>
+      </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <Button variant='default' size='lg'>
+          This is a button.
+        </Button>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
