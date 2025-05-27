@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "name": "@workspace/mobile-ui",
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "workspace:*",
+    "@types/react": "~19.0.14",
+    "babel-preset-expo": "~13.1.11",
+    "expo": "~53.0.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.2",
+    "react-native-web": "~0.20.0"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-web": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native": {
+      "optional": true
+    },
+    "react-native-web": {
+      "optional": true
+    }
+  }
+}
