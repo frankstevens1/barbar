@@ -1,21 +1,19 @@
-/**
- * Learn more about light and dark modes:
- * https://docs.expo.dev/guides/color-schemes/
- */
-
-import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+// point at your shared tokens package
+import {
+  lightTokens,
+  darkTokens,
+  type ThemeTokens,
+} from '@workspace/mobile-ui/lib/tokens';
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark
+  colorName: keyof ThemeTokens
 ) {
-  const theme = useColorScheme() ?? 'light';
-  const colorFromProps = props[theme];
+  const scheme = useColorScheme() ?? 'light';
+  const tokens = scheme === 'dark' ? darkTokens : lightTokens;
 
-  if (colorFromProps) {
-    return colorFromProps;
-  } else {
-    return Colors[theme][colorName];
-  }
+  // allow prop override
+  const colorFromProps = props[scheme];
+  return colorFromProps ?? tokens[colorName];
 }

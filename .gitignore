@@ -87,3 +87,4 @@ jestcache/
 # Misc
 
 \*.log
+logs/

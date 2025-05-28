@@ -22,20 +22,9 @@ export default function HomeScreen() {
         <ThemedText type="title">Hello World.</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <Button variant='default' size='lg'>
-          This is a button.
-        </Button>
-        <Avatar>
-          <AvatarImage source={{ uri: "https://img.jsdelivr.com/github.com/saveryanov/avatars/blob/master/examples/Some%20random%20string.png?raw=true" }} />
-          <AvatarFallback>
-            <ThemedText>{"FS"}</ThemedText>
-          </AvatarFallback>
-        </Avatar>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
+          Edit <ThemedText type="defaultSemiBold">/apps/mobile/app/(tabs)/index.tsx</ThemedText> to see changes.
           Press{' '}
           <ThemedText type="defaultSemiBold">
             {Platform.select({

@@ -1,7 +1,7 @@
 // Auto-generated tokens with OKLCH -> HEX conversion for React Native compatibility
 import { parse, formatHex } from 'culori';
 
-type ThemeTokens = {
+export type ThemeTokens = {
   background: string;
   foreground: string;
   card: string;

@@ -75,3 +75,57 @@ export interface TenantConfig {
     icon: string;
   }>;
 }
+
+// src/types/supabase.ts -- as in `@supabase/supabase-js` package
+
+/** 
+ * A single external identity (e.g. GitHub, Google) linked to the user 
+ */
+export interface UserIdentity {
+  id: string;
+  user_id: string;
+  identity_data: Record<string, any>;
+  provider: string;
+  created_at: string;
+  last_sign_in_at: string;
+  updated_at?: string;
+}
+
+/**
+ * The shape of the Auth.User object returned by supabase-js
+ */
+export interface User {
+  /** UUID */
+  id: string;
+  /** App-level metadata (e.g. roles, providers) */
+  app_metadata: {
+    provider?: string;
+    [key: string]: any;
+  };
+  /** Arbitrary user metadata you set on signup */
+  user_metadata: Record<string, any>;
+  /** Audience: e.g. "authenticated" */
+  aud: string;
+
+  // Timestamps (ISO strings) for various lifecycle events
+  confirmation_sent_at?: string;
+  recovery_sent_at?: string;
+  email_change_sent_at?: string;
+  new_email?: string;
+  invited_at?: string;
+  action_link?: string;
+  email?: string;
+  phone?: string;
+  created_at: string;
+  confirmed_at?: string;
+  email_confirmed_at?: string;
+  phone_confirmed_at?: string;
+  last_sign_in_at?: string;
+  updated_at?: string;
+
+  /** Optional role (if you’ve set up RLS/roles) */
+  role?: string;
+
+  /** Linked OAuth identities */
+  identities?: UserIdentity[];
+}

@@ -1,12 +1,23 @@
-import { Button } from "@workspace/ui/components/button"
+import LandingPage from "@/components/landing/LandingPage"
+import { Message } from "@workspace/supabase/types";
+import { tenantAccess } from "@workspace/supabase/lib/tenant-access";
 
-export default function Page() {
+export default async function Page({
+    searchParams,
+  }: {
+    searchParams: Promise<Message>;
+  }) {
+    const sParams = await searchParams
+    // tenant
+    const { 
+      tenant,
+      userRole,
+      tenantConfig,
+    } = await tenantAccess()
+
   return (
-    <div className="flex items-center justify-center min-h-svh">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-bold">Hello World</h1>
-        <Button size="sm">Button</Button>
-      </div>
-    </div>
+    <>
+      <LandingPage tenant={tenant} userRole={userRole} tenantConfig={tenantConfig} />
+    </>
   )
 }
