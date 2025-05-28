@@ -49,6 +49,7 @@ apps/mobile/web-build/
 
 .env\*
 !.env.example
+.env.local
 
 # Logs
 

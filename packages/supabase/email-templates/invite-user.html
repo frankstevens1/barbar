@@ -1,0 +1,22 @@
+<div style="text-align: center; padding: 40px; font-family: Arial, sans-serif;">
+    <img 
+      src="https://<supabase_project_id>.supabase.co/storage/v1/object/public/assets/email-logo.png" 
+      alt="Logo" 
+      style="max-width: 150px; margin-bottom: 30px;"
+    />
+  
+    <h2 style="font-size: 28px; font-weight: bold; color: #333; margin-bottom: 24px;">
+      You have been invited
+    </h2>
+  
+    <p style="font-size: 18px; color: #666; margin-bottom: 24px;">
+      You have been invited to create a user on {{ .SiteURL }}. Follow this link to accept the invite:
+    </p>
+  
+    <a 
+      href="{{ .ConfirmationURL }}" 
+      style="display: inline-block; background-color: #457575; color: white; padding: 14px 28px; text-decoration: none; font-size: 18px; border-radius: 8px; margin-bottom: 30px;">
+      Accept the invite
+    </a>
+</div>
+  
