@@ -27,12 +27,13 @@ export type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
 export interface ButtonProps extends React.ComponentPropsWithoutRef<typeof Pressable> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  asChild?: boolean;
   children: React.ReactNode;
 }
 
 export const Button = React.forwardRef<View, ButtonProps>(
   (
-    { variant = 'default', size = 'default', style, children, ...props },
+    { variant = 'default', size = 'default', style, children, asChild = false, ...props },
     ref
   ) => {
     const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';

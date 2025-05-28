@@ -1,6 +1,6 @@
-import { HomeMessage } from '@workspace/feature-home/HomeMessage';
-import { HomeMessageIcon } from '@workspace/feature-home/HomeMessageIcon';
 import { Button } from '@workspace/mobile-ui/components/button';
+import { Avatar, AvatarImage, AvatarFallback } from '@workspace/mobile-ui/components/avatar';
+
 import { Image, StyleSheet, Platform } from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -25,6 +25,12 @@ export default function HomeScreen() {
         <Button variant='default' size='lg'>
           This is a button.
         </Button>
+        <Avatar>
+          <AvatarImage source={{ uri: "https://img.jsdelivr.com/github.com/saveryanov/avatars/blob/master/examples/Some%20random%20string.png?raw=true" }} />
+          <AvatarFallback>
+            <ThemedText>{"FS"}</ThemedText>
+          </AvatarFallback>
+        </Avatar>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>

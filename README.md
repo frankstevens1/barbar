@@ -1,21 +1,13 @@
-# Monorepo: Expo + Next.js with Shared UI Library
+# Monorepo: Expo & Next.js (Separate Web & Mobile UIs)
 
-This Turborepo-powered monorepo uses pnpm workspaces to host multiple frontend apps and shared packages:
+A Turborepo-powered monorepo using pnpm workspaces to host two frontends—each with its own UI package—to avoid cross-platform dependency conflicts and maintain focused development workflows:
 
-* **`apps/mobile`**: Expo React Native app using Expo Router and Metro monorepo config.
-* **`apps/web`**: Next.js App Router app with shadcn/ui for web components.
-* **`packages/ui`**: Web-only UI library (shadcn/ui + Tailwind CSS).
-* **`packages/mobile-ui`**: Mobile-only UI library (Nativewind + React Native).
-* **`packages/feature-home`**: Example feature package illustrating cross-platform code usage.
-* **`packages/eslint-config`, `packages/typescript-config`**: Shared linting and TS configs.
+* **`apps/web`**: Next.js App Router with Tailwind CSS v4 and shadcn/ui.
+* **`apps/mobile`**: Expo React Native app (no Tailwind)—components bootstrapped from shadcn/ui via script, then refined manually.
+* **`packages/ui`**: Web-only UI components (Tailwind CSS v4 + shadcn/ui).
+* **`packages/mobile-ui`**: Mobile-only UI components (React Native StyleSheet via generate-rn.zsh).
 
-Currently, **UI is split into two packages**—one for web and one for mobile—because a unified Tailwind/Nativenwind solution isn't yet in place. Below are steps to maintain the current setup and guidance toward a single shared UI library in the future.
-
----
-
-## 📂 Workspace Configuration
-
-> **Note:** No root `tailwind.config.js` is present; each UI package or app configures its own.
+*Keeping mobile and web UI packages separate is, in my opinion, the best choice: mobile stays mobile, web stays web—avoiding dependency bloat while keeping style tokens aligned through shared scripts.*
 
 ---
 
@@ -23,12 +15,12 @@ Currently, **UI is split into two packages**—one for web and one for mobile—
 
 ```txt
 /apps
-  ├── mobile       # Expo app (mobile-ui pkg consumed)
-  └── web          # Next.js app (ui pkg consumed)
+  ├── mobile       # Expo app consuming packages/mobile-ui
+  └── web          # Next.js app consuming packages/ui
 /packages
-  ├── ui           # Web-only UI components (shadcn + Tailwind)
-  ├── mobile-ui    # Mobile-only UI components (Nativewind)
-  ├── feature-home # Cross-platform feature example
+  ├── ui           # Web-only UI components
+  ├── mobile-ui    # Mobile-only UI components
+  ├── feature-home # Cross-platform code examples
   ├── eslint-config
   └── typescript-config
 pnpm-workspace.yaml
@@ -38,85 +30,28 @@ package.json
 
 ---
 
-## 🔗 Current UI Packages
+## 🚀 Benefits of Our Approach
 
-### `packages/ui` (Web)
+* **Web with Tailwind CSS v4**
 
-* **package.json** excerpts:
+  * On-demand JIT engine produces only used CSS, plus arbitrary value support for rapid prototyping.
+  * Enhanced tree-shaking and reduced bundle size for faster production builds.
+  * Rich plugin ecosystem and first‑class dark mode influence generate consistent, themeable designs.
 
-  ```json
-  {
-    "name": "@workspace/ui",
-    "private": true,
-    "dependencies": {
-      "lucide-react": "^0.475.0",
-      "clsx": "^2.1.1",
-      "tw-animate-css": "^1.2.4",
-      "class-variance-authority": "^0.7.1",
-      "zod": "^3.24.2"
-    },
-    "devDependencies": {
-      "tailwindcss": "^4.0.8",
-      "@tailwindcss/postcss": "^4.0.8",
-      "postcss": "^8.x"
-    },
-    "exports": {
-      "./components/*": "./src/components/*.tsx",
-      "./styles/globals.css": "./src/styles/globals.css"
-    }
-  }
-  ```
+* **Native React Native StyleSheets**
 
-* **postcss.config.mjs**:
+  * Zero runtime overhead: styles compiled to native objects at build time.
+  * Predictable performance and memory use on mobile devices.
+  * Script-driven scaffolding from shadcn/ui ensures design parity; you then manually polish with VSCode Copilot or your IDE.
 
-  ```js
-  /** @type {import('postcss-load-config').Config} */
-  export default { plugins: { '@tailwindcss/postcss': {} } };
-  ```
+* **pnpm & Turborepo**
 
-* **components.json** feeds the shadcn CLI:
-
-  ```json
-  {
-    "tailwind": { "css": "src/styles/globals.css" },
-    "aliases": { "@workspace/ui/components": "components" }
-  }
-  ```
-
-### `packages/mobile-ui` (Mobile)
-
-* **package.json** excerpts:
-
-  ```json
-  {
-    "name": "@workspace/mobile-ui",
-    "private": true,
-    "peerDependencies": {
-      "react": "*",
-      "react-native": "*"
-    },
-    "devDependencies": {
-      "babel-preset-expo": "~13.1.11",
-      "nativewind": "^2.x"
-    }
-  }
-  ```
-
-* **babel.config.js** (enables Nativewind plugin later):
-
-  ```js
-  module.exports = function(api) {
-    api.cache(true);
-    return {
-      presets: ['babel-preset-expo'],
-      // plugin 'nativewind/babel' will be added
-    };
-  };
-  ```
+  * Strict, deduped dependency graph avoids version conflicts across platforms.
+  * Incremental caching speeds up installs and builds across all workspaces.
 
 ---
 
-## 🚀 Development Workflow
+## 🔧 Development Workflow
 
 1. **Install all dependencies**
 
@@ -124,13 +59,28 @@ package.json
    pnpm install
    ```
 
-2. **Run locally**
+2. **Initialize shadcn in Web**
 
-   * **All services**: `pnpm run dev`
-   * **Web only**: `pnpm --filter=apps/web dev`
-   * **Mobile only**: `pnpm --filter=apps/mobile start`
+   ```bash
+   pnpm --filter=apps/web exec npx shadcn@latest init
+   pnpm --filter=apps/web exec npx shadcn add button input alert
+   ```
 
-3. **Lint & type-check**
+3. **Bootstrap Mobile UI components**
+
+   ```bash
+   ./scripts/generate-rn.zsh gpt-4o-mini
+   ```
+
+   * Scaffolds `.tsx` in `packages/mobile-ui/src/components` from your web components.
+   * **Manually refine**: open in VSCode, use Copilot or your IDE to adjust styles and ensure correctness.
+
+4. **Run your apps**
+
+   * **Web**: `pnpm --filter=apps/web dev`
+   * **Mobile**: `pnpm --filter=apps/mobile start`
+
+5. **Lint & Type-Check**
 
    ```bash
    pnpm run lint
@@ -139,31 +89,31 @@ package.json
 
 ---
 
-## 🎯 Path to a Single Shared UI Library (ai generated)
+## ⏭ Next Steps: CI/CD & Builds
 
-To converge **`packages/ui`** and **`packages/mobile-ui`** into one cross-platform `packages/ui`, you’ll need to:
+### Web (Next.js → Vercel)
 
-1. **Unify Tailwind config** at the root:
+* **Build & Deploy**: configure a GitHub Actions workflow:
 
-   * Create `tailwind.config.js` listing all content paths across web, mobile, and packages.
-2. **Install both Tailwind CSS and Nativewind** in `packages/ui`:
+  1. Checkout & cache pnpm modules.
+  2. Install (`pnpm install`), lint, type-check.
+  3. Run `pnpm --filter=apps/web build`.
+  4. Use the official `vercel` action or Vercel integration to deploy.
 
-   ```bash
-   pnpm add -F packages/ui tailwindcss postcss autoprefixer nativewind
-   ```
+* **Preview URLs**: enable pull request previews for staging feedback.
 
-3. **Configure Babel for Nativewind** in both apps and UI package:
+### Mobile (Expo → App Stores)
 
-   ```js
-   // babel.config.js
-   plugins: ['nativewind/babel']
-   ```
+* **EAS Build**:
 
-4. **Update Metro** (in `apps/mobile/metro.config.js`) to watch the unified UI package.
-5. **Ensure Next.js transpiles the unified package** via `transpilePackages` in `next.config.mjs`.
-6. **Migrate existing web-only and mobile-only components** into `packages/ui/src/components`, using platform checks or `.native.tsx` extensions.
-7. **Adjust exports and path aliases** to reference the single `@workspace/ui` package everywhere.
+  1. Install `expo-cli` and configure `eas.json` with iOS/Android credentials.
+  2. In GitHub Actions:
 
-Once complete, you can remove `packages/mobile-ui` and consume only `@workspace/ui` in both apps.
+     * Setup Node & pnpm.
+     * Install dependencies.
+     * Run `eas build --platform ios --non-interactive` and/or Android.
+  3. Upload iOS builds to TestFlight and Android APK/AAB to Google Play using `expo upload` or Fastlane.
+
+* **Versioning & Releases**: bump versions in `app.json`, tag Git commits, and use semantic-release or a custom script to trigger builds.
 
 ---
