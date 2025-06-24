@@ -1,27 +1,34 @@
-// Learn more https://docs.expo.dev/guides/monorepos
-const { getDefaultConfig } = require('expo/metro-config');
-const { FileStore } = require('metro-cache');
-const path = require('path');
+// apps/mobile/metro.config.js
+const { getDefaultConfig } = require("expo/metro-config");
+const exclusionList = require("metro-config/src/defaults/exclusionList");
+const path = require("path");
 
-// Create the default Expo config for Metro
-// This includes the automatic monorepo configuration for workspaces
-// See: https://docs.expo.dev/guides/monorepos/#automatic-configuration
-const config = getDefaultConfig(__dirname);
+const projectRoot   = __dirname;
+const workspaceRoot = path.resolve(projectRoot, "../..");
 
-// You can configure it manually as well, the most important parts are:
-// const projectRoot = __dirname;
-// const workspaceRoot = path.join(__dirname, '..', '..');
-// #1 - Watch all files within the monorepo
-// config.watchFolders = [workspaceRoot];
-// #2 - Try resolving with project modules first, then hoisted workspace modules
-// config.resolver.nodeModulesPaths = [
-//   path.resolve(projectRoot, 'node_modules'),
-//   path.resolve(workspaceRoot, 'node_modules'),
-// ];
+// 1) Load Expo’s default Metro config
+const config = getDefaultConfig(projectRoot);
 
-// Use turborepo to restore the cache when possible
-config.cacheStores = [
-  new FileStore({ root: path.join(__dirname, 'node_modules', '.cache', 'metro') }),
-];
+// 2) Tell Metro to watch the entire monorepo
+config.watchFolders = [workspaceRoot];
+
+// 3) Tweak only the resolver, merging into its existing shape:
+config.resolver = {
+  ...config.resolver,
+
+  // A) blacklist any nested node_modules under your packages folder
+  blockList: exclusionList([
+    /.*\/packages\/.*\/node_modules\/.*/,
+  ]),
+
+  // B) look in your app’s node_modules first, then the monorepo root
+  nodeModulesPaths: [
+    path.join(projectRoot, "node_modules"),
+    path.join(workspaceRoot, "node_modules"),
+  ],
+
+  // C) let Metro parse any extra extensions you need (e.g. cjs for Tailwind plugins)
+  sourceExts: [...config.resolver.sourceExts, "cjs"],
+};
 
 module.exports = config;
