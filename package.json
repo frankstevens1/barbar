@@ -4,7 +4,16 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev --parallel",
+    "build:web": "turbo build --filter=web",
+    "build:mobile": "turbo build --filter=mobile",
+    
+    "dev": "turbo dev --filter=web",
+    "dev:web": "turbo dev --filter=web",
+
+    "dev:mobile:android": "pnpm --filter mobile run start:android",
+    "dev:mobile:ios":     "pnpm --filter mobile run start:ios",
+    "dev:mobile":         "pnpm run dev:mobile:android & pnpm run dev:mobile:ios",
+
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -15,7 +24,7 @@
     "turbo": "^2.4.2",
     "typescript": "5.8.3"
   },
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.12.3",
   "engines": {
     "node": ">=20"
   }

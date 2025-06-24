@@ -1,139 +1,80 @@
-// Auto-generated tokens with OKLCH -> HEX conversion for React Native compatibility
-import { parse, formatHex } from 'culori';
+// Auto-generated (or hand-edited) theme-tokens.ts
+export const lightTokens = {
+  background: "#ffffff",
+  foreground: "#252525",
+  card: "#ffffff",
+  cardForeground: "#252525",
+  popover: "#ffffff",
+  popoverForeground: "#252525",
+  primary: "#343434",
+  primaryForeground: "#fafafa",
+  secondary: "#f7f7f7",
+  secondaryForeground: "#343434",
+  muted: "#f7f7f7",
+  mutedForeground: "#8e8e8e",
+  accent: "#f7f7f7",
+  accentForeground: "#343434",
+  destructive: "#c42223",
+  destructiveForeground: "#c42223",
+  border: "#ebebeb",
+  input: "#ebebeb",
+  ring: "#b59bf2",
+  chart1: "#ad35da",
+  chart2: "#990ed1",
+  chart3: "#6645b7",
+  chart4: "#b98766",
+  chart5: "#b36955",
+  radius: "0.625rem",
+  radiusSm: "calc(0.625rem - 4px)",
+  radiusMd: "calc(0.625rem - 2px)",
+  radiusLg: "0.625rem",
+  radiusXl: "calc(0.625rem + 4px)",
+  sidebar: "#fafafa",
+  sidebarForeground: "#252525",
+  sidebarPrimary: "#343434",
+  sidebarPrimaryForeground: "#fafafa",
+  sidebarAccent: "#f7f7f7",
+  sidebarAccentForeground: "#343434",
+  sidebarBorder: "#ebebeb",
+  sidebarRing: "#b59bf2",
+} as const
 
-export type ThemeTokens = {
-  background: string;
-  foreground: string;
-  card: string;
-  cardForeground: string;
-  popover: string;
-  popoverForeground: string;
-  primary: string;
-  primaryForeground: string;
-  secondary: string;
-  secondaryForeground: string;
-  muted: string;
-  mutedForeground: string;
-  accent: string;
-  accentForeground: string;
-  destructive: string;
-  destructiveForeground: string;
-  border: string;
-  input: string;
-  ring: string;
-  chart1: string;
-  chart2: string;
-  chart3: string;
-  chart4: string;
-  chart5: string;
-  radius: string;
-  radiusSm: string;
-  radiusMd: string;
-  radiusLg: string;
-  radiusXl: string;
-  sidebar: string;
-  sidebarForeground: string;
-  sidebarPrimary: string;
-  sidebarPrimaryForeground: string;
-  sidebarAccent: string;
-  sidebarAccentForeground: string;
-  sidebarBorder: string;
-  sidebarRing: string;
-};
-
-// Raw OKLCH values
-const rawLight: Record<string, string> = {
-  background: 'oklch(1 0 0)',
-  foreground: 'oklch(0.145 0 0)',
-  card: 'oklch(1 0 0)',
-  cardForeground: 'oklch(0.145 0 0)',
-  popover: 'oklch(1 0 0)',
-  popoverForeground: 'oklch(0.145 0 0)',
-  primary: 'oklch(0.205 0 0)',
-  primaryForeground: 'oklch(0.985 0 0)',
-  secondary: 'oklch(0.97 0 0)',
-  secondaryForeground: 'oklch(0.205 0 0)',
-  muted: 'oklch(0.97 0 0)',
-  mutedForeground: 'oklch(0.556 0 0)',
-  accent: 'oklch(0.97 0 0)',
-  accentForeground: 'oklch(0.205 0 0)',
-  destructive: 'oklch(0.577 0.245 27.325)',
-  destructiveForeground: 'oklch(0.577 0.245 27.325)',
-  border: 'oklch(0.922 0 0)',
-  input: 'oklch(0.922 0 0)',
-  ring: 'oklch(0.708 0 0)',
-  chart1: 'oklch(0.646 0.222 41.116)',
-  chart2: 'oklch(0.6 0.118 184.704)',
-  chart3: 'oklch(0.398 0.07 227.392)',
-  chart4: 'oklch(0.828 0.189 84.429)',
-  chart5: 'oklch(0.769 0.188 70.08)',
-  radius: '0.625rem',
-  radiusSm: 'calc(0.625rem - 4px)',
-  radiusMd: 'calc(0.625rem - 2px)',
-  radiusLg: '0.625rem',
-  radiusXl: 'calc(0.625rem + 4px)',
-  sidebar: 'oklch(0.985 0 0)',
-  sidebarForeground: 'oklch(0.145 0 0)',
-  sidebarPrimary: 'oklch(0.205 0 0)',
-  sidebarPrimaryForeground: 'oklch(0.985 0 0)',
-  sidebarAccent: 'oklch(0.97 0 0)',
-  sidebarAccentForeground: 'oklch(0.205 0 0)',
-  sidebarBorder: 'oklch(0.922 0 0)',
-  sidebarRing: 'oklch(0.708 0 0)',
-};
-const rawDark: Record<string, string> = {
-  background: 'oklch(0.145 0 0)',
-  foreground: 'oklch(0.985 0 0)',
-  card: 'oklch(0.145 0 0)',
-  cardForeground: 'oklch(0.985 0 0)',
-  popover: 'oklch(0.145 0 0)',
-  popoverForeground: 'oklch(0.985 0 0)',
-  primary: 'oklch(0.985 0 0)',
-  primaryForeground: 'oklch(0.205 0 0)',
-  secondary: 'oklch(0.269 0 0)',
-  secondaryForeground: 'oklch(0.985 0 0)',
-  muted: 'oklch(0.269 0 0)',
-  mutedForeground: 'oklch(0.708 0 0)',
-  accent: 'oklch(0.269 0 0)',
-  accentForeground: 'oklch(0.985 0 0)',
-  destructive: 'oklch(0.396 0.141 25.723)',
-  destructiveForeground: 'oklch(0.637 0.237 25.331)',
-  border: 'oklch(0.269 0 0)',
-  input: 'oklch(0.269 0 0)',
-  ring: 'oklch(0.556 0 0)',
-  chart1: 'oklch(0.488 0.243 264.376)',
-  chart2: 'oklch(0.696 0.17 162.48)',
-  chart3: 'oklch(0.769 0.188 70.08)',
-  chart4: 'oklch(0.627 0.265 303.9)',
-  chart5: 'oklch(0.645 0.246 16.439)',
-  radius: '0.625rem',
-  radiusSm: 'calc(0.625rem - 4px)',
-  radiusMd: 'calc(0.625rem - 2px)',
-  radiusLg: '0.625rem',
-  radiusXl: 'calc(0.625rem + 4px)',
-  sidebar: 'oklch(0.205 0 0)',
-  sidebarForeground: 'oklch(0.985 0 0)',
-  sidebarPrimary: 'oklch(0.488 0.243 264.376)',
-  sidebarPrimaryForeground: 'oklch(0.985 0 0)',
-  sidebarAccent: 'oklch(0.269 0 0)',
-  sidebarAccentForeground: 'oklch(0.985 0 0)',
-  sidebarBorder: 'oklch(0.269 0 0)',
-  sidebarRing: 'oklch(0.439 0 0)',
-};
-
-function toHex(value: string): string {
-  // Only convert color strings; leave other tokens intact
-  if (value.startsWith('oklch(')) {
-    const parsed = parse(value);
-    return parsed ? formatHex(parsed) : value;
-  }
-  return value;
-}
-
-export const lightTokens: ThemeTokens = Object.fromEntries(
-  Object.entries(rawLight).map(([key, val]) => [key, toHex(val)])
-) as ThemeTokens;
-
-export const darkTokens: ThemeTokens = Object.fromEntries(
-  Object.entries(rawDark).map(([key, val]) => [key, toHex(val)])
-) as ThemeTokens;
+export const darkTokens = {
+  background: "#252525",
+  foreground: "#fafafa",
+  card: "#252525",
+  cardForeground: "#fafafa",
+  popover: "#252525",
+  popoverForeground: "#fafafa",
+  primary: "#fafafa",
+  primaryForeground: "#343434",
+  secondary: "#434343",
+  secondaryForeground: "#fafafa",
+  muted: "#434343",
+  mutedForeground: "#b59bf2",
+  accent: "#434343",
+  accentForeground: "#fafafa",
+  destructive: "#6c1c1a",
+  destructiveForeground: "#a22926",
+  border: "#434343",
+  input: "#434343",
+  ring: "#8e8e8e",
+  chart1: "#7d3e8e",
+  chart2: "#b1189a",
+  chart3: "#b36955",
+  chart4: "#84508b",
+  chart5: "#8b5e3f",
+  radius: "0.625rem",
+  radiusSm: "calc(0.625rem - 4px)",
+  radiusMd: "calc(0.625rem - 2px)",
+  radiusLg: "0.625rem",
+  radiusXl: "calc(0.625rem + 4px)",
+  sidebar: "#343434",
+  sidebarForeground: "#fafafa",
+  sidebarPrimary: "#7d3e8e",
+  sidebarPrimaryForeground: "#fafafa",
+  sidebarAccent: "#434343",
+  sidebarAccentForeground: "#fafafa",
+  sidebarBorder: "#434343",
+  sidebarRing: "#8e8e8e",
+} as const

@@ -1,5 +1,6 @@
 import Header from "./Header"
 import { Tenant, TenantConfig } from "@workspace/supabase/types"
+import { Hero } from "./Hero";
 
 interface LandingPageProps {
   tenant: Tenant;
@@ -9,10 +10,10 @@ interface LandingPageProps {
 
 export default function LandingPage({ tenant, userRole, tenantConfig }: LandingPageProps) {
   return (
-    <div className="flex flex-col items-center min-h-screen">
+    <div className="relative flex flex-col items-center min-h-screen overflow-auto hide-scrollbar">
       <Header tenant={tenant} userRole={userRole} tenantConfig={tenantConfig} />
-      <main className="flex flex-col items-center w-full">
-       ...
+      <main className="flex flex-col items-center w-full -mt-16">
+      <Hero/>
       </main>
     </div>
   )

@@ -1,116 +1,82 @@
-# Monorepo: Expo & Next.js (Separate Web & Mobile UIs)
+# Monorepo Workflow: Expo & Next.js
 
-A Turborepo-powered monorepo using pnpm workspaces to host two frontends—each with its own UI package—to avoid cross-platform dependency conflicts and maintain focused development workflows:
-
-* **`apps/web`**: Next.js App Router with Tailwind CSS v4 and shadcn/ui (already configured).
-* **`apps/mobile`**: Expo React Native app (no Tailwind)—components bootstrapped from shadcn/ui via script, then refined manually.
-* **`packages/ui`**: Web-only UI components (Tailwind CSS v4 + shadcn/ui).
-* **`packages/mobile-ui`**: Mobile-only UI components (React Native StyleSheet via `generate-app.zsh`).
-
-*Keeping mobile and web UI packages separate avoids dependency bloat while aligning design tokens through shared scripts.*
+A Turborepo + pnpm monorepo hosting two frontends—Next.js for web and Expo for mobile—with separate UI packages to avoid cross‑platform dependency conflicts.
 
 ---
 
-## 🗂 Directory Overview
+## Directory Layout
 
 ```txt
-/apps
-  ├── mobile       # Expo app consuming packages/mobile-ui templates
-  └── web          # Next.js app consuming packages/ui templates
-/packages
-  ├── ui           # Web-only UI components (ready to use)
-  ├── mobile-ui    # Mobile-only UI components (scaffolded and refined)
-  ├── feature-home # Cross-platform code examples
-  ├── eslint-config
-  └── typescript-config
-pnpm-workspace.yaml
-turbo.json
-package.json
+/ (repo root)
+├── apps
+│   ├── web         # Next.js App Router (uses packages/ui)
+│   └── mobile      # Expo React Native (uses packages/mobile-ui)
+├── packages
+│   ├── ui          # Web-only UI components (Tailwind v4 + shadcn/ui)
+│   ├── mobile-ui   # Mobile-only UI components (React Native StyleSheet)
+│   ├── feature-... # Shared feature code (optional)
+│   ├── eslint-config
+│   └── typescript-config
+├── pnpm-workspace.yaml
+├── turbo.json
+└── package.json    # root, defines workspace scripts
 ```
 
 ---
 
-## 🚀 Benefits of Our Approach
+## Key Benefits
 
-* **Web with Tailwind CSS v4**
+* **Next.js Web (apps/web)**
 
-  * On-demand JIT, arbitrary value support, tree-shaking, and rich plugin ecosystem.
+  * Tailwind CSS v4 JIT, arbitrary values, plugin ecosystem
+  * shadcn/ui components in `packages/ui`
+* **Expo Mobile (apps/mobile)**
 
-* **Native React Native StyleSheets**
+  * React Native StyleSheets for zero-runtime-overhead
+  * Scaffolded UI in `packages/mobile-ui`, refined manually
+* **Monorepo Tooling**
 
-  * Zero runtime overhead, predictable performance, and memory use.
-  * Script-driven scaffolding for design parity, with manual refinement.
-
-* **pnpm & Turborepo**
-
-  * Strict, deduped dependency graph and incremental caching across workspaces.
-
----
-
-## 🔧 Development Workflow
-
-1. **Install all dependencies**
-
-   ```bash
-   pnpm install
-   ```
-
-2. **Scaffold a New App**
-
-   Use the `generate-app.zsh` script in the `scripts/` directory to create a fresh mobile or web app from the built‑in templates:
-
-   ```bash
-   # Make the script executable if needed
-   chmod +x ./scripts/generate-app.zsh
-
-   # For mobile: you'll be prompted to choose a free Metro port (8080–8089)
-   ./scripts/generate-app.zsh mobile ninja
-   # Produces a new folder `apps/mobile-ninja` from the `apps/mobile` template.
-
-   # For web: no port selection needed
-   ./scripts/generate-app.zsh web ninja
-   # Produces a new folder `apps/web-ninja` from the `apps/web` template.
-   ```
-
-   **Note:** these templates include only the files and configuration common to *all* apps. For app‑specific changes, update the template in this repository or apply them after scaffolding; you can always re‑scaffold from upstream.
-
-3. **Bootstrap Mobile UI components**
-
-   ```bash
-   ./scripts/generate-rn.zsh gpt-4o-mini
-   ```
-
-   * Scaffolds `.tsx` files in `packages/mobile-ui/src/components` based on your web components.
-   * We plan to train our own transformation model over time—starting with shadcn/ui and extending to other libraries—so treat these outputs as drafts to refine manually with your IDE and Copilot.
-
-4. **Run your apps**
-
-   You can run both apps simultaneously using Turborepo's parallel task execution:
-
-   ```bash
-   pnpm run dev   # runs both web and mobile in parallel (turbo run dev --parallel)
-   ```
-
-   Or run each individually:
-
-   * **Web**: `pnpm --filter=apps/web dev`
-   * **Mobile**: `pnpm --filter=apps/mobile start`
-
-5. **Lint & Type-Check**
-
-   ```bash
-   pnpm run lint
-   pnpm run check-types
-   ```
+  * `pnpm` workspaces with strict, deduped deps
+  * `turbo` caching & parallelism for fast builds
 
 ---
 
-## ⏭ Next Steps: CI/CD & Builds
+## Root Scripts
 
-### Web (Next.js → Vercel)
+* **build**: Run `turbo build` for all packages
+* **build\:web**: Build only the Next.js app (`apps/web`)
+* **build\:mobile**: Trigger EAS production build in `apps/mobile`
+* **dev** / **dev\:web**: Start the Next.js dev server via Turbo
+* **dev\:mobile\:android**: Launch Expo on Android (`--android --tunnel`)
+* **dev\:mobile\:ios**: Launch Expo on iOS (`--ios --tunnel`)
+* **dev\:mobile**: Run both Android and iOS Expo targets in parallel
+* **lint**: Run `turbo lint` across workspaces
+* **format**: Format code with Prettier
 
-* Build & Deploy via GitHub Actions or Vercel integration.
+## App-level Scripts
 
-### Mobile (Expo → App Stores)
+* **Web (`apps/web`)**: default Next.js commands (`dev`, `build`, `start`, `lint`)
+* **Mobile (`apps/mobile`)**: Expo commands (`start`, `start:android`, `start:ios`, `lint`)
 
-* Configure `eas build`, automate via GitHub Actions, and release via TestFlight/Play Store.
+## Development Workflow
+
+Follow these steps to start working:
+
+1. **Install dependencies**: Run `pnpm install` at the repo root.
+2. **Scaffold apps (optional)**: Use `./scripts/generate-app.zsh` to create new web or mobile apps from templates.
+3. **Generate mobile UI**: Execute `./scripts/generate-rn.zsh` to scaffold React Native components based on web UI.
+4. **Start dev servers** in separate terminals:
+
+   * **Web only**: `pnpm dev:web` in one terminal
+   * **Mobile only**: `pnpm dev:mobile` in another terminal
+   * **Both platforms**: open two terminals and run `pnpm dev:web` and `pnpm dev:mobile` respectively
+5. **Lint and type-check**: Run `pnpm lint` and `pnpm turbo run check-types` to validate code quality.
+
+## CI/CD & Deployment
+
+* **Web**: Deploy Next.js via Vercel or GitHub Actions.
+* **Mobile**: Use EAS (`apps/mobile/eas.json`) in your CI pipeline to build & submit to stores.
+
+---
+
+*End of workflow guide.*

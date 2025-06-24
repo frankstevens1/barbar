@@ -6,15 +6,14 @@
     "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
-    "@types/culori": "^4.0.0",
     "@types/react": "~19.0.14",
     "@workspace/eslint-config": "workspace:*",
     "babel-preset-expo": "~13.1.11",
-    "expo": "~53.0.6",
+    "expo": "^53.0.12",
     "i": "^0.3.7",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-native": "0.79.2",
+    "react-native": "0.79.4",
     "react-native-web": "~0.20.0"
   },
   "peerDependencies": {
@@ -31,7 +30,6 @@
     }
   },
   "dependencies": {
-    "culori": "^4.0.1",
     "react-native-svg": "^15.12.0"
   }
 }
